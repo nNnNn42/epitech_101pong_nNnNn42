@@ -1,0 +1,65 @@
+#!/usr/bin/env python3
+from sys  import argv, stderr
+from math import fabs, sqrt, atan, pow, degrees, acos
+
+#importation de la multiplication et fonctions math + sys, gestion des erreurs : temps d'avancement de la balle "n" supérieur ou égal à 0
+#gestion des erreurs : mauvais argument rentré dans le terminal(try = test erreur, except = affichage erreur)
+
+try :
+    x0 = float(argv[1])
+    y0 = float(argv[2])
+    z0 = float(argv[3])
+    x1 = float(argv[4])
+    y1 = float(argv[5])
+    z1 = float(argv[6])
+    n = int(argv[7])
+
+except ValueError:
+    stderr.write("Wrong type of argument.\n")
+    exit (84)
+    
+#gestion des erreurs : temps négatif impossible    
+
+if int(argv[7]) < 0:
+   stderr.write("Wrong time shift.\n")
+   exit (84)
+   
+#gestion des erreurs : nombre d'éléments dans la string
+
+if len(argv) != 8:
+    stderr.write("Wrong amount of arguments.\n")
+    exit (84)
+    
+#déclaration vélocité, calcul vecteur vitesse
+
+velocite_x = x1 - x0
+velocite_y = y1 - y0
+velocite_z = z1 - z0
+coord_n_x = velocite_x * n + x1
+coord_n_y = velocite_y * n + y1
+coord_n_z = velocite_z * n + z1
+velocite = sqrt(pow(velocite_x, 2) + pow(velocite_y, 2) + pow(velocite_z, 2))
+
+#calcul angle incidence
+if velocite == 0:
+        angle_incid = 0
+else:
+        angle_incid = abs(90 - degrees(acos(velocite_z / velocite)))
+
+#print résultats : vecteur vitesse, coordonnées au temps
+
+print("The velocity vector of the ball is:")
+print("(%.2f, %.2f, %.2f)" %(velocite_x, velocite_y, velocite_z))
+print("At time t + ", n,", the ball coordinates will be:")
+print("(%.2f, %.2f, %.2f)" %(coord_n_x, coord_n_y, coord_n_z))
+
+#calcul de l'angle d'incidence, %.2f = 2 chiffres decimale
+
+if (z1 >= 0 and velocite_z < 0) or (z1 < 0 and velocite_z >= 0):
+    print("The incidence angle is:")
+    print("%.2f" % angle_incid, "degrees")
+else:
+    print("The ball won't reach the paddle")
+
+
+exit (0)
